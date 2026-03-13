@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'mock_data.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 void main() {
   runApp(const GamegramApp());
@@ -56,10 +57,7 @@ class LoginScreen extends StatelessWidget {
             const Text(
               'Gamegram',
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 48),
             const _GamegramTextField(
@@ -125,9 +123,7 @@ class _GamegramTextField extends StatelessWidget {
         labelText: label,
         filled: true,
         fillColor: Colors.white.withOpacity(0.05),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
       ),
     );
   }
@@ -189,10 +185,7 @@ class FeedScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Discover'),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: const Text('Discover'), centerTitle: true),
       body: ListView.builder(
         padding: const EdgeInsets.all(16),
         itemCount: demoGames.length,
@@ -252,12 +245,7 @@ class FeedScreen extends StatelessWidget {
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
-                          shadows: [
-                            Shadow(
-                              blurRadius: 8,
-                              color: Colors.black,
-                            ),
-                          ],
+                          shadows: [Shadow(blurRadius: 8, color: Colors.black)],
                         ),
                       ),
                     ),
@@ -299,34 +287,57 @@ class _StatIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      children: [
-        Icon(icon, size: 18),
-        const SizedBox(width: 6),
-        Text(label),
-      ],
+      children: [Icon(icon, size: 18), const SizedBox(width: 6), Text(label)],
     );
   }
 }
 
-class GamePlayerScreen extends StatelessWidget {
+// class GamePlayerScreen extends StatelessWidget {
+//   const GamePlayerScreen({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     // Placeholder for WebGL/HTML game. Later we can use
+//     // `webview_flutter` on mobile and a custom widget on web.
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text('Play'),
+//         centerTitle: true,
+//       ),
+//       body: const Center(
+//         child: Text(
+//           'Embedded WebGL/HTML game will appear here.\n'
+//           'For now this is a placeholder screen.',
+//           textAlign: TextAlign.center,
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+class GamePlayerScreen extends StatefulWidget {
   const GamePlayerScreen({super.key});
 
   @override
+  State<GamePlayerScreen> createState() => _GamePlayerScreenState();
+}
+
+class _GamePlayerScreenState extends State<GamePlayerScreen> {
+  late final WebViewController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..loadRequest(Uri.parse('https://play2048.co/'));
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // Placeholder for WebGL/HTML game. Later we can use
-    // `webview_flutter` on mobile and a custom widget on web.
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Play'),
-        centerTitle: true,
-      ),
-      body: const Center(
-        child: Text(
-          'Embedded WebGL/HTML game will appear here.\n'
-          'For now this is a placeholder screen.',
-          textAlign: TextAlign.center,
-        ),
-      ),
+      appBar: AppBar(title: const Text('Play')),
+      body: WebViewWidget(controller: _controller),
     );
   }
 }
@@ -372,10 +383,7 @@ class ProfileScreen extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const Text(
-                      'Creator',
-                      style: TextStyle(fontSize: 12),
-                    ),
+                    const Text('Creator', style: TextStyle(fontSize: 12)),
                   ],
                 ),
                 const Spacer(),
@@ -435,10 +443,7 @@ class ProfileScreen extends StatelessWidget {
             const SizedBox(height: 24),
             const Text(
               'Games',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 12),
             Expanded(
@@ -465,9 +470,7 @@ class ProfileScreen extends StatelessWidget {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
                               image: DecorationImage(
-                                image: AssetImage(
-                                  game.thumbnailAsset,
-                                ),
+                                image: AssetImage(game.thumbnailAsset),
                                 fit: BoxFit.cover,
                               ),
                             ),
