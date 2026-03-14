@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'game_player_screen.dart';
 import 'mock_data.dart';
 
 class FeedScreen extends StatelessWidget {
@@ -21,7 +22,11 @@ class FeedScreen extends StatelessWidget {
             ),
             child: InkWell(
               onTap: () {
-                // later: open game details
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => const GamePlayerScreen(),
+                  ),
+                );
               },
               child: Padding(
                 padding: const EdgeInsets.all(16),

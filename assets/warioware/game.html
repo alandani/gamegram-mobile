@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>WarioWare 3D</title>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; overflow: hidden; background: #000; touch-action: none; }
+    canvas { position: absolute; top: 0; left: 0; }
+
+    /* ── HUD ── */
+    #hud {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      font-family: 'Impact', 'Arial Black', Arial, sans-serif;
+      color: #fff;
+    }
+    #score-bar {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      display: flex;
+      justify-content: space-between;
+      padding: 14px 18px;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.72), transparent);
+    }
+    #score-text, #lives-text { font-size: 22px; text-shadow: 2px 2px 0 #000; letter-spacing: 1px; }
+    #prompt {
+      position: absolute;
+      top: 62px; left: 0; right: 0;
+      text-align: center;
+      font-size: 50px;
+      letter-spacing: 3px;
+      text-shadow: 3px 3px 0 rgba(0,0,0,0.85);
+    }
+    #timer-wrap {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 10px;
+      background: rgba(255,255,255,0.12);
+    }
+    #timer-bar { height: 100%; width: 100%; background: #00ff66; }
+    #result-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 72px;
+      letter-spacing: 4px;
+      text-shadow: 4px 4px 0 rgba(0,0,0,0.9);
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+
+    /* ── Splash / Game-Over screen ── */
+    #screen {
+      position: absolute;
+      inset: 0;
+      z-index: 99;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      background: linear-gradient(135deg, #14003a 0%, #000814 100%);
+      font-family: 'Impact', 'Arial Black', Arial, sans-serif;
+      color: #fff;
+    }
+    #screen.hidden { display: none; }
+    #screen-title {
+      font-size: 52px;
+      text-align: center;
+      color: #ffcc00;
+      text-shadow: 3px 3px 0 rgba(0,0,0,0.8);
+      line-height: 1.1;
+    }
+    #screen-sub {
+      font-size: 16px;
+      font-family: Arial, sans-serif;
+      color: #ccc;
+      text-align: center;
+      max-width: 280px;
+      line-height: 1.65;
+    }
+    .btn {
+      padding: 14px 48px;
+      font-size: 26px;
+      font-family: 'Impact', 'Arial Black', Arial, sans-serif;
+      letter-spacing: 2px;
+      background: #ffcc00;
+      color: #000;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 4px 0 #997700;
+      -webkit-tap-highlight-color: transparent;
+      pointer-events: all;
+    }
+    .btn:active { transform: translateY(3px); box-shadow: 0 1px 0 #997700; }
+
+    /* ── Countdown overlay ── */
+    #countdown {
+      position: absolute;
+      inset: 0;
+      z-index: 95;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 128px;
+      font-family: 'Impact', 'Arial Black', Arial, sans-serif;
+      color: #ffcc00;
+      text-shadow: 6px 6px 0 rgba(0,0,0,0.9);
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+
+<!-- HUD (drawn above canvas) -->
+<div id="hud">
+  <div id="score-bar">
+    <span id="score-text">SCORE: 0</span>
+    <span id="lives-text">❤️❤️❤️</span>
+  </div>
+  <div id="prompt"></div>
+  <div id="timer-wrap"><div id="timer-bar"></div></div>
+  <div id="result-overlay"></div>
+</div>
+
+<!-- Intro / Game-Over screen -->
+<div id="screen">
+  <div id="screen-title">🎮 WARIO<br>WARE 3D</div>
+  <p id="screen-sub">Three 3-D micro-games.<br>Survive them all!<br>Move or tap to interact.</p>
+  <button class="btn" id="action-btn">START!</button>
+</div>
+
+<!-- Countdown overlay -->
+<div id="countdown"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+'use strict';
+
+// ═══════════════════════════════════════════════
+// Renderer & Camera
+// ═══════════════════════════════════════════════
+var W = window.innerWidth;
+var H = window.innerHeight;
+
+var renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(W, H);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+document.body.insertBefore(renderer.domElement, document.getElementById('hud'));
+
+var camera = new THREE.PerspectiveCamera(60, W / H, 0.1, 200);
+camera.position.set(0, 3, 11);
+camera.lookAt(0, 0, 0);
+
+// ═══════════════════════════════════════════════
+// DOM refs
+// ═══════════════════════════════════════════════
+var $scoreText  = document.getElementById('score-text');
+var $livesText  = document.getElementById('lives-text');
+var $prompt     = document.getElementById('prompt');
+var $timerBar   = document.getElementById('timer-bar');
+var $result     = document.getElementById('result-overlay');
+var $screen     = document.getElementById('screen');
+var $screenTitle= document.getElementById('screen-title');
+var $screenSub  = document.getElementById('screen-sub');
+var $actionBtn  = document.getElementById('action-btn');
+var $countdown  = document.getElementById('countdown');
+
+// ═══════════════════════════════════════════════
+// Input — normalised pointer 0..1
+// ═══════════════════════════════════════════════
+var ptrX = 0.5;
+var ptrY = 0.5;
+
+function updatePtr(cx, cy) { ptrX = cx / W; ptrY = cy / H; }
+
+window.addEventListener('touchstart', function(e) {
+  e.preventDefault();
+  updatePtr(e.touches[0].clientX, e.touches[0].clientY);
+  fireOnTap(e);
+}, { passive: false });
+
+window.addEventListener('touchmove', function(e) {
+  e.preventDefault();
+  updatePtr(e.touches[0].clientX, e.touches[0].clientY);
+}, { passive: false });
+
+window.addEventListener('mousedown', function(e) {
+  updatePtr(e.clientX, e.clientY);
+  fireOnTap(e);
+});
+window.addEventListener('mousemove', function(e) { updatePtr(e.clientX, e.clientY); });
+
+function fireOnTap(e) {
+  if (activeGame && activeGame.onTap) activeGame.onTap(e);
+}
+
+// ═══════════════════════════════════════════════
+// Game state
+// ═══════════════════════════════════════════════
+var score      = 0;
+var lives      = 3;
+var activeGame = null;
+var gameActive = false;
+var timeLeft   = 5.5;
+var GAME_DUR   = 5.5;
+var inResult   = false;
+var resultTimer= 0;
+
+function updateHUD() {
+  $scoreText.textContent = 'SCORE: ' + score;
+  $livesText.textContent = '❤️'.repeat(Math.max(0, lives));
+}
+
+function showResult(win) {
+  inResult    = true;
+  gameActive  = false;
+  resultTimer = 1.1;
+  $result.textContent   = win ? '✅ WIN!' : '❌ MISS!';
+  $result.style.color   = win ? '#00ff88' : '#ff4444';
+  $result.style.opacity = '1';
+}
+
+function afterResult() {
+  $result.style.opacity = '0';
+  if (lives <= 0) {
+    $screenTitle.innerHTML = 'GAME<br>OVER!';
+    $screenTitle.style.color = '#ff3300';
+    $screenSub.innerHTML   = 'Final score: ' + score;
+    $actionBtn.textContent = 'RETRY';
+    $screen.classList.remove('hidden');
+  } else {
+    doCountdown(function() { pickAndStart(); });
+  }
+}
+
+// ─── Intro / Retry button ───────────────────────
+$actionBtn.addEventListener('click', function() {
+  score = 0; lives = 3; updateHUD();
+  $screenTitle.innerHTML   = '🎮 WARIO<br>WARE 3D';
+  $screenTitle.style.color = '#ffcc00';
+  $screenSub.innerHTML     = 'Three 3-D micro-games.<br>Survive them all!<br>Move or tap to interact.';
+  $screen.classList.add('hidden');
+  doCountdown(function() { pickAndStart(); });
+});
+
+// ═══════════════════════════════════════════════
+// Countdown helper
+// ═══════════════════════════════════════════════
+function doCountdown(cb) {
+  $countdown.style.display = 'flex';
+  var n = 3;
+  $countdown.textContent = n;
+  var iv = setInterval(function() {
+    n--;
+    if (n <= 0) {
+      clearInterval(iv);
+      $countdown.style.display = 'none';
+      cb();
+    } else {
+      $countdown.textContent = n;
+    }
+  }, 700);
+}
+
+// ═══════════════════════════════════════════════
+// Mini-game picker
+// ═══════════════════════════════════════════════
+var factories = [dodgeGame, collectGame, jumpGame];
+var lastFactoryIdx = -1;
+
+function pickAndStart() {
+  if (activeGame) { activeGame.dispose(); activeGame = null; }
+  // Avoid picking the same game twice in a row
+  var idx;
+  do { idx = Math.floor(Math.random() * factories.length); }
+  while (idx === lastFactoryIdx && factories.length > 1);
+  lastFactoryIdx = idx;
+  activeGame = factories[idx]();
+  timeLeft   = GAME_DUR;
+  gameActive = true;
+  inResult   = false;
+  $timerBar.style.width = '100%';
+}
+
+// ═══════════════════════════════════════════════
+// Mini-Game 1 — DODGE
+// Move your cube left/right to avoid incoming red cubes.
+// ═══════════════════════════════════════════════
+function dodgeGame() {
+  var scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x1a0040);
+
+  scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+  var sun = new THREE.DirectionalLight(0xffffff, 0.9);
+  sun.position.set(4, 8, 5);
+  scene.add(sun);
+
+  var grid = new THREE.GridHelper(30, 20, 0x330055, 0x330055);
+  grid.position.y = -1;
+  scene.add(grid);
+
+  var pMat = new THREE.MeshStandardMaterial({ color: 0x00ccff });
+  var pGeo = new THREE.BoxGeometry(1, 1, 1);
+  var player = new THREE.Mesh(pGeo, pMat);
+  player.position.set(0, 0, 3);
+  scene.add(player);
+
+  var eMat = new THREE.MeshStandardMaterial({ color: 0xff3300 });
+  var enemies = [];
+  function spawn() {
+    var e = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.9, 0.9), eMat);
+    e.position.set((Math.random() - 0.5) * 8, 0, -10 - Math.random() * 4);
+    scene.add(e);
+    enemies.push(e);
+  }
+  spawn(); spawn(); spawn();
+
+  $prompt.textContent = '⚡ DODGE!';
+  $prompt.style.color = '#ff4444';
+
+  var hit = false;
+
+  function update(dt) {
+    player.position.x += ((ptrX - 0.5) * 9 - player.position.x) * 0.12;
+    player.rotation.y += dt * 2;
+    for (var i = 0; i < enemies.length; i++) {
+      var e = enemies[i];
+      e.position.z += dt * 6;
+      e.rotation.x += dt * 2;
+      if (e.position.z > 6) {
+        e.position.z = -10 - Math.random() * 4;
+        e.position.x = (Math.random() - 0.5) * 8;
+      }
+      if (!hit &&
+          Math.abs(e.position.z - player.position.z) < 0.88 &&
+          Math.abs(e.position.x - player.position.x) < 0.88) {
+        hit = true;
+        lives--;
+        updateHUD();
+        showResult(false);
+        return;
+      }
+    }
+  }
+
+  function onTimeUp() { if (!hit) { score++; showResult(true); } }
+
+  function dispose() {
+    pGeo.dispose(); pMat.dispose();
+    eMat.dispose();
+    for (var i = 0; i < enemies.length; i++) enemies[i].geometry.dispose();
+  }
+
+  return { scene: scene, update: update, onTimeUp: onTimeUp, dispose: dispose };
+}
+
+// ═══════════════════════════════════════════════
+// Mini-Game 2 — COLLECT
+// Slide the basket left/right to catch falling gold stars.
+// ═══════════════════════════════════════════════
+function collectGame() {
+  var scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x001408);
+
+  scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+  var sun = new THREE.DirectionalLight(0xfff0a0, 1.0);
+  sun.position.set(5, 10, 5);
+  scene.add(sun);
+
+  var bMat = new THREE.MeshStandardMaterial({ color: 0x0077ff });
+  var bGeo = new THREE.BoxGeometry(2.4, 0.4, 1);
+  var basket = new THREE.Mesh(bGeo, bMat);
+  basket.position.set(0, -2, 0);
+  scene.add(basket);
+
+  var sMat = new THREE.MeshStandardMaterial({ color: 0xffcc00, emissive: 0xff8800, emissiveIntensity: 0.5 });
+  var sGeo = new THREE.OctahedronGeometry(0.45);
+  var stars = [];
+  for (var i = 0; i < 4; i++) {
+    var m = new THREE.Mesh(sGeo, sMat);
+    m.position.set((Math.random() - 0.5) * 8, 5 + i * 2.5, 0);
+    scene.add(m);
+    stars.push({ mesh: m, speed: 1.8 + Math.random() * 1.5, caught: false });
+  }
+
+  $prompt.textContent = '⭐ COLLECT!';
+  $prompt.style.color = '#ffcc00';
+
+  var collected = 0;
+
+  function update(dt) {
+    basket.position.x += ((ptrX - 0.5) * 9 - basket.position.x) * 0.15;
+    for (var i = 0; i < stars.length; i++) {
+      var s = stars[i];
+      if (s.caught) continue;
+      s.mesh.position.y -= s.speed * dt;
+      s.mesh.rotation.y += dt * 2.5;
+      if (Math.abs(s.mesh.position.y - basket.position.y) < 0.65 &&
+          Math.abs(s.mesh.position.x - basket.position.x) < 1.35) {
+        s.caught = true;
+        collected++;
+        scene.remove(s.mesh);
+      } else if (s.mesh.position.y < -4) {
+        s.mesh.position.y = 5 + Math.random() * 4;
+        s.mesh.position.x = (Math.random() - 0.5) * 8;
+      }
+    }
+  }
+
+  function onTimeUp() {
+    if (collected >= 2) { score++; showResult(true); }
+    else { lives--; updateHUD(); showResult(false); }
+  }
+
+  function dispose() {
+    bGeo.dispose(); bMat.dispose();
+    sGeo.dispose(); sMat.dispose();
+  }
+
+  return { scene: scene, update: update, onTimeUp: onTimeUp, dispose: dispose };
+}
+
+// ═══════════════════════════════════════════════
+// Mini-Game 3 — JUMP
+// Tap to jump over the rolling orange obstacles.
+// ═══════════════════════════════════════════════
+function jumpGame() {
+  var scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x000e1f);
+
+  scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+  var sun = new THREE.DirectionalLight(0xffffff, 0.9);
+  sun.position.set(5, 10, 3);
+  scene.add(sun);
+
+  var gGeo = new THREE.BoxGeometry(30, 0.5, 2);
+  var gMat = new THREE.MeshStandardMaterial({ color: 0x1a4080 });
+  var ground = new THREE.Mesh(gGeo, gMat);
+  ground.position.set(0, -1.25, 0);
+  scene.add(ground);
+
+  var pMat = new THREE.MeshStandardMaterial({ color: 0x00ffcc });
+  var pGeo = new THREE.BoxGeometry(0.85, 0.85, 0.85);
+  var player = new THREE.Mesh(pGeo, pMat);
+  var GY = -0.575;
+  player.position.set(-2.5, GY, 0);
+  scene.add(player);
+
+  var oMat = new THREE.MeshStandardMaterial({ color: 0xff5500 });
+  var obs = [];
+  function spawnObs(x) {
+    var o = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.9, 0.9), oMat);
+    o.position.set(x, GY, 0);
+    scene.add(o);
+    obs.push(o);
+  }
+  spawnObs(6); spawnObs(12);
+
+  $prompt.textContent = '🦘 JUMP!';
+  $prompt.style.color = '#00ffcc';
+
+  var velY = 0;
+  var onGround = true;
+  var hit = false;
+
+  function onTap(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    if (onGround) { velY = 6.5; onGround = false; }
+  }
+
+  function update(dt) {
+    velY -= 16 * dt;
+    player.position.y += velY * dt;
+    if (player.position.y <= GY) {
+      player.position.y = GY;
+      velY = 0;
+      onGround = true;
+    }
+
+    for (var i = 0; i < obs.length; i++) {
+      var o = obs[i];
+      o.position.x -= 5 * dt;
+      o.rotation.y += dt * 3;
+      if (o.position.x < -8) o.position.x = 8 + Math.random() * 3;
+      if (!hit &&
+          Math.abs(o.position.x - player.position.x) < 0.82 &&
+          Math.abs(o.position.y - player.position.y) < 0.82) {
+        hit = true;
+        lives--;
+        updateHUD();
+        showResult(false);
+        return;
+      }
+    }
+  }
+
+  function onTimeUp() { if (!hit) { score++; showResult(true); } }
+
+  function dispose() {
+    pGeo.dispose(); pMat.dispose();
+    gGeo.dispose(); gMat.dispose();
+    oMat.dispose();
+    for (var i = 0; i < obs.length; i++) obs[i].geometry.dispose();
+  }
+
+  return { scene: scene, update: update, onTimeUp: onTimeUp, dispose: dispose, onTap: onTap };
+}
+
+// ═══════════════════════════════════════════════
+// Main loop
+// ═══════════════════════════════════════════════
+var lastT = 0;
+
+function loop(ts) {
+  requestAnimationFrame(loop);
+  var dt = Math.min((ts - lastT) / 1000, 0.1);
+  lastT = ts;
+
+  // Always render the current scene so visuals don't freeze
+  if (activeGame) renderer.render(activeGame.scene, camera);
+
+  // Result cooldown
+  if (inResult) {
+    resultTimer -= dt;
+    if (resultTimer <= 0) afterResult();
+    return;
+  }
+
+  if (!gameActive || !activeGame) return;
+
+  // Drain timer bar
+  timeLeft -= dt;
+  var pct = Math.max(0, timeLeft / GAME_DUR) * 100;
+  $timerBar.style.width      = pct + '%';
+  $timerBar.style.background = pct > 50 ? '#00ff66'
+                             : pct > 25 ? '#ffcc00'
+                             :            '#ff3300';
+
+  if (timeLeft <= 0) {
+    gameActive = false;
+    activeGame.onTimeUp();
+    return;
+  }
+
+  activeGame.update(dt);
+}
+
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>
