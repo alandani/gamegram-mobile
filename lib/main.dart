@@ -35,70 +35,77 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.symmetric(horizontal: 32),
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xFF1F0A3C), Color(0xFF060014)],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const SizedBox(height: 48),
-            const Icon(
-              Icons.videogame_asset_rounded,
-              size: 80,
-              color: Colors.white,
-            ),
-            const SizedBox(height: 16),
-            const Text(
-              'Gamegram',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 48),
-            const _GamegramTextField(
-              label: 'Username or email',
-              icon: Icons.person_outline,
-            ),
-            const SizedBox(height: 16),
-            const _GamegramTextField(
-              label: 'Password',
-              icon: Icons.lock_outline,
-              obscureText: true,
-            ),
-            const SizedBox(height: 24),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (_) => const ShellScreen()),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 14),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+      body: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 32),
+            child: Container(
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Color(0xFF1F0A3C), Color(0xFF060014)],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
                 ),
               ),
-              child: const Text(
-                'Log In',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const SizedBox(height: 48),
+                  const Icon(
+                    Icons.videogame_asset_rounded,
+                    size: 80,
+                    color: Colors.white,
+                  ),
+                  const SizedBox(height: 16),
+                  const Text(
+                    'Gamegram',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 48),
+                  const _GamegramTextField(
+                    label: 'Username or email',
+                    icon: Icons.person_outline,
+                  ),
+                  const SizedBox(height: 16),
+                  const _GamegramTextField(
+                    label: 'Password',
+                    icon: Icons.lock_outline,
+                    obscureText: true,
+                  ),
+                  const SizedBox(height: 24),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (_) => const ShellScreen()),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: const Text(
+                      'Log In',
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  TextButton(
+                    onPressed: () {
+                      // TODO: sign up flow
+                    },
+                    child: const Text("Don't have an account? Sign up"),
+                  ),
+                  const SizedBox(height: 48),
+                ],
               ),
             ),
-            const SizedBox(height: 16),
-            TextButton(
-              onPressed: () {
-                // TODO: sign up flow
-              },
-              child: const Text("Don't have an account? Sign up"),
-            ),
-            const SizedBox(height: 48),
-          ],
+          ),
         ),
       ),
     );
@@ -139,7 +146,7 @@ class ShellScreen extends StatefulWidget {
 }
 
 class _ShellScreenState extends State<ShellScreen> {
-  int _index = 1; // center tab by default
+  int _index = 0; // show Home tab by default
 
   @override
   Widget build(BuildContext context) {

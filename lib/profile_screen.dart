@@ -26,58 +26,61 @@ class ProfileScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                const CircleAvatar(
-                  radius: 32,
-                  backgroundColor: Colors.purple,
-                  child: Icon(Icons.person, size: 32),
-                ),
-                const SizedBox(width: 16),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      demoProfile.username,
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  const CircleAvatar(
+                    radius: 32,
+                    backgroundColor: Colors.purple,
+                    child: Icon(Icons.person, size: 32),
+                  ),
+                  const SizedBox(width: 16),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        demoProfile.username,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    const Text('Creator', style: TextStyle(fontSize: 12)),
-                  ],
-                ),
-                const Spacer(),
-                Column(
-                  children: [
-                    Text(
-                      '${demoProfile.posts}',
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    const Text('Posts', style: TextStyle(fontSize: 12)),
-                  ],
-                ),
-                const SizedBox(width: 12),
-                Column(
-                  children: [
-                    Text(
-                      '${demoProfile.followers / 1000}k',
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    const Text('Followers', style: TextStyle(fontSize: 12)),
-                  ],
-                ),
-                const SizedBox(width: 12),
-                Column(
-                  children: [
-                    Text(
-                      '${demoProfile.following}',
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    const Text('Following', style: TextStyle(fontSize: 12)),
-                  ],
-                ),
-              ],
+                      const Text('Creator', style: TextStyle(fontSize: 12)),
+                    ],
+                  ),
+                  const SizedBox(width: 16),
+                  Column(
+                    children: [
+                      Text(
+                        '${demoProfile.posts}',
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      const Text('Posts', style: TextStyle(fontSize: 12)),
+                    ],
+                  ),
+                  const SizedBox(width: 12),
+                  Column(
+                    children: [
+                      Text(
+                        '${demoProfile.followers / 1000}k',
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      const Text('Followers', style: TextStyle(fontSize: 12)),
+                    ],
+                  ),
+                  const SizedBox(width: 12),
+                  Column(
+                    children: [
+                      Text(
+                        '${demoProfile.following}',
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      const Text('Following', style: TextStyle(fontSize: 12)),
+                    ],
+                  ),
+                ],
+              ),
             ),
             const SizedBox(height: 16),
             Row(
