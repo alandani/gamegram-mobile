@@ -66,7 +66,10 @@ class FeedScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(16),
                         image: DecorationImage(
-                          image: AssetImage(game.thumbnailAsset),
+                          image: game.thumbnailAsset.startsWith('http')
+                              ? NetworkImage(game.thumbnailAsset)
+                              : AssetImage(game.thumbnailAsset)
+                                  as ImageProvider,
                           fit: BoxFit.cover,
                         ),
                       ),

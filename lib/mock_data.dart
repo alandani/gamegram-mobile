@@ -15,7 +15,8 @@ final demoGames = <Game>[
     developerName: 'IndieDev',
     likes: 12400,
     comments: 230,
-    thumbnailAsset: 'assets/placeholder_space.png',
+    thumbnailAsset:
+        'https://img.itch.zone/aW1nLzI2MDUxNTMzLnBuZw==/315x250%23c/9Ods9%2B.png',
     playUrl:
         'https://html-classic.itch.zone/html/16755713/index.html?v=1773141754',
   ),
@@ -25,7 +26,8 @@ final demoGames = <Game>[
     developerName: 'IndieDev',
     likes: 9800,
     comments: 180,
-    thumbnailAsset: 'assets/placeholder_space.png',
+    thumbnailAsset:
+        'https://img.itch.zone/aW1nLzIzODM2MDY1LnBuZw==/315x250%23c/elpSf3.png',
     playUrl:
         'https://html-classic.itch.zone/html/13820450-1489126/index.html',
   ),
@@ -35,7 +37,8 @@ final demoGames = <Game>[
     developerName: 'IndieDev',
     likes: 11250,
     comments: 205,
-    thumbnailAsset: 'assets/placeholder_space.png',
+    thumbnailAsset:
+        'https://img.itch.zone/aW1nLzI1NTg0MDYyLnBuZw==/315x250%23c/IFRLme.png',
     playUrl: 'https://html-classic.itch.zone/html/16720108/index.html?v=1772868727',
   ),
   Game(
@@ -44,7 +47,8 @@ final demoGames = <Game>[
     developerName: 'IndieDev',
     likes: 8650,
     comments: 150,
-    thumbnailAsset: 'assets/placeholder_space.png',
+    thumbnailAsset:
+        'https://img.itch.zone/aW1nLzE4MzA4Mjg5LnBuZw==/315x250%23c/eAuQL7.png',
     playUrl:
         'https://html-classic.itch.zone/html/2267583/index.html?v=1591301667',
   ),
@@ -54,7 +58,8 @@ final demoGames = <Game>[
     developerName: 'IndieDev',
     likes: 7300,
     comments: 120,
-    thumbnailAsset: 'assets/placeholder_space.png',
+    thumbnailAsset:
+        'https://img.itch.zone/aW1nLzI2MDU0MjIzLnBuZw==/315x250%23c/RFeXtt.png',
     playUrl:
         'https://html-classic.itch.zone/html/16756806/ChemistowerDemoFullWebBuild/index.html?v=1773152030',
   ),
@@ -64,7 +69,8 @@ final demoGames = <Game>[
     developerName: 'IndieDev',
     likes: 9100,
     comments: 175,
-    thumbnailAsset: 'assets/placeholder_space.png',
+    thumbnailAsset:
+        'https://img.itch.zone/aW1nLzIxODM3OTQ1LnBuZw==/315x250%23c/sWsWs4.png',
     playUrl: 'https://html-classic.itch.zone/html/14111168/index.html',
   ),
   Game(
@@ -73,7 +79,8 @@ final demoGames = <Game>[
     developerName: 'IndieDev',
     likes: 6400,
     comments: 90,
-    thumbnailAsset: 'assets/placeholder_space.png',
+    thumbnailAsset:
+        'https://img.itch.zone/aW1nLzE2NTk0ODMxLnBuZw==/315x250%23c/aqUODE.png',
     playUrl:
         'https://html-classic.itch.zone/html/10701493/index.html?v=1732313567',
   ),
@@ -83,7 +90,8 @@ final demoGames = <Game>[
     developerName: 'IndieDev',
     likes: 7800,
     comments: 130,
-    thumbnailAsset: 'assets/placeholder_space.png',
+    thumbnailAsset:
+        'https://img.itch.zone/aW1nLzg0MjM2MDgucG5n/315x250%23c/d%2FEaEK.png',
     playUrl:
         'https://html-classic.itch.zone/html/13429050/web/index.html',
   ),
@@ -93,7 +101,8 @@ final demoGames = <Game>[
     developerName: 'IndieDev',
     likes: 5200,
     comments: 75,
-    thumbnailAsset: 'assets/placeholder_space.png',
+    thumbnailAsset:
+        'https://img.itch.zone/aW1nLzE3Nzk3NDg4LnBuZw==/315x250%23c/ZJr4Ym.png',
     playUrl:
         'https://html-classic.itch.zone/html/16554576/index.html?v=1771695537',
   ),
@@ -103,7 +112,8 @@ final demoGames = <Game>[
     developerName: 'IndieDev',
     likes: 15200,
     comments: 320,
-    thumbnailAsset: 'assets/placeholder_space.png',
+    thumbnailAsset:
+        'https://img.itch.zone/aW1nLzEyMDEzMTE5LnBuZw==/315x250%23c/1vbA44.png',
     playUrl:
         'https://html-classic.itch.zone/html/7803470/index.html?v=1732313647',
   ),
@@ -113,7 +123,8 @@ final demoGames = <Game>[
     developerName: 'IndieDev',
     likes: 6800,
     comments: 110,
-    thumbnailAsset: 'assets/placeholder_space.png',
+    thumbnailAsset:
+        'https://img.itch.zone/aW1nLzIwNjM5NDMuZ2lm/315x250%23c/%2BC0t5F.gif',
     playUrl:
         'https://html-classic.itch.zone/html/353430/index.html?v=1542782413',
   ),
@@ -123,7 +134,8 @@ final demoGames = <Game>[
     developerName: 'IndieDev',
     likes: 8400,
     comments: 140,
-    thumbnailAsset: 'assets/placeholder_space.png',
+    thumbnailAsset:
+        'https://img.itch.zone/aW1nLzIyMjAzNTcucG5n/315x250%23c/oQTZaz.png',
     playUrl:
         'https://html-classic.itch.zone/html/2743755/index.html?v=1732313804',
   ),
@@ -133,7 +145,8 @@ final demoGames = <Game>[
     developerName: 'IndieDev',
     likes: 5900,
     comments: 95,
-    thumbnailAsset: 'assets/placeholder_space.png',
+    thumbnailAsset:
+        'https://img.itch.zone/aW1nLzY4MDQzMDYucG5n/315x250%23c/jTfEX0.png',
     playUrl:
         'https://html-classic.itch.zone/html/4354731/index.html',
   ),
@@ -143,7 +156,8 @@ final demoGames = <Game>[
     developerName: 'IndieDev',
     likes: 10100,
     comments: 210,
-    thumbnailAsset: 'assets/placeholder_space.png',
+    thumbnailAsset:
+        'https://img.itch.zone/aW1nLzI0Njk4MDE1LnBuZw==/315x250%23c/FbRYdg.png',
     playUrl: 'https://jab-lao.itch.io/pokemon-overlord',
   ),
   Game(
@@ -152,7 +166,8 @@ final demoGames = <Game>[
     developerName: 'IndieDev',
     likes: 9300,
     comments: 190,
-    thumbnailAsset: 'assets/placeholder_space.png',
+    thumbnailAsset:
+        'https://img.itch.zone/aW1nLzI2NDI3MTkucG5n/315x250%23c/pYhxyd.png',
     playUrl: 'https://html-classic.itch.zone/html/13200376/index.html',
   ),
   Game(
@@ -161,7 +176,8 @@ final demoGames = <Game>[
     developerName: 'IndieDev',
     likes: 7100,
     comments: 125,
-    thumbnailAsset: 'assets/placeholder_space.png',
+    thumbnailAsset:
+        'https://img.itch.zone/aW1nLzI1NDk1NDM3LnBuZw==/315x250%23c/oDTApt.png',
     playUrl: 'https://html-classic.itch.zone/html/10977225/index.html',
   ),
   Game(
@@ -170,7 +186,8 @@ final demoGames = <Game>[
     developerName: 'IndieDev',
     likes: 6700,
     comments: 100,
-    thumbnailAsset: 'assets/placeholder_space.png',
+    thumbnailAsset:
+        'https://img.itch.zone/aW1nLzMxNDA5NjUucG5n/315x250%23c/LMBBxo.png',
     playUrl: 'https://html-classic.itch.zone/html/14589544/index.html',
   ),
 ];

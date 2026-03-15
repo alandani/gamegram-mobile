@@ -145,7 +145,10 @@ class ProfileScreen extends StatelessWidget {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(12),
                                 image: DecorationImage(
-                                  image: AssetImage(game.thumbnailAsset),
+                                  image: game.thumbnailAsset.startsWith('http')
+                                      ? NetworkImage(game.thumbnailAsset)
+                                      : AssetImage(game.thumbnailAsset)
+                                          as ImageProvider,
                                   fit: BoxFit.cover,
                                 ),
                               ),
