@@ -6,7 +6,7 @@ class Game {
     required this.likes,
     required this.comments,
     required this.thumbnailAsset,
-     required this.playUrl,
+    required this.playUrl,
     this.isLiked = false,
   });
 
@@ -16,8 +16,26 @@ class Game {
   final int likes;
   final int comments;
   final String thumbnailAsset;
-   final String playUrl;
+  final String playUrl;
   final bool isLiked;
+}
+
+class SandboxGame {
+  SandboxGame({
+    required this.id,
+    required this.name,
+    required this.sandboxUrl,
+    required this.runnableUrl,
+    required this.thumbnail,
+    required this.creatorName,
+  });
+
+  final String id;
+  final String name;
+  final String sandboxUrl;
+  final String runnableUrl;
+  final String thumbnail;
+  final String creatorName;
 }
 
 class UserProfile {

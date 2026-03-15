@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-import 'game_player_screen.dart';
 import 'mock_data.dart';
 
 class FeedScreen extends StatelessWidget {
   const FeedScreen({super.key});
+
+  Future<void> _openGame(String url, BuildContext context) async {
+    final uri = Uri.parse(url);
+    final launched = await launchUrl(uri, mode: LaunchMode.externalApplication);
+    if (!launched && context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Could not open game link')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,16 +31,7 @@ class FeedScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(16),
             ),
             child: InkWell(
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => GamePlayerScreen(
-                      playUrl: game.playUrl,
-                      title: game.title,
-                    ),
-                  ),
-                );
-              },
+              onTap: () => _openGame(game.playUrl, context),
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(

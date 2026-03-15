@@ -175,7 +175,7 @@ class _ShellScreenState extends State<ShellScreen> {
           NavigationDestination(
             icon: Icon(Icons.videogame_asset_outlined),
             selectedIcon: Icon(Icons.videogame_asset),
-            label: 'Play',
+            label: 'Sandbox',
           ),
           NavigationDestination(
             icon: Icon(Icons.person_outline),

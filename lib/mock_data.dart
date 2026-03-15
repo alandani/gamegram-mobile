@@ -8,6 +8,47 @@ final demoProfile = UserProfile(
   following: 584,
 );
 
+final demoSandboxes = <SandboxGame>[
+  SandboxGame(
+    id: 'b1b2c3d4-0000-0000-0000-000000000001',
+    name: 'platformer',
+    sandboxUrl: 'https://your-platformer.netlify.app/index.html',
+    runnableUrl:
+        'https://gamegram-backend-2fqi.onrender.com/sandboxes/b3fab486-79fc-46ac-9abc-12c142a82c28/files/index.html?mode=edit&sandbox_id=b3fab486-79fc-46ac-9abc-12c142a82c28',
+    thumbnail: 'assets/placeholder_space.png',
+    creatorName: 'Gamegram Creator',
+  ),
+  SandboxGame(
+    id: 'b1b2c3d4-0000-0000-0000-000000000002',
+    name: 'quiz',
+    sandboxUrl: 'https://your-quiz.netlify.app/index.html',
+    runnableUrl:
+        'https://gamegram-backend-2fqi.onrender.com/sandboxes/b3fab486-79fc-46ac-9abc-12c142a82c28/files/index.html?mode=edit&sandbox_id=b3fab486-79fc-46ac-9abc-12c142a82c28',
+    thumbnail: 'assets/placeholder_space.png',
+    creatorName: 'Gamegram Creator',
+  ),
+  SandboxGame(
+    id: 'b3fab486-79fc-46ac-9abc-12c142a82c28',
+    name: 'test2',
+    sandboxUrl:
+        'https://npmrrkwizgrjiodijvje.supabase.co/storage/v1/object/public/sandboxes/test2/index.html?',
+    runnableUrl:
+        'https://gamegram-backend-2fqi.onrender.com/sandboxes/b3fab486-79fc-46ac-9abc-12c142a82c28/files/index.html?mode=edit&sandbox_id=b3fab486-79fc-46ac-9abc-12c142a82c28',
+    thumbnail: 'assets/placeholder_space.png',
+    creatorName: 'Gamegram Creator',
+  ),
+  SandboxGame(
+    id: '5815884f-0d3d-49f3-bd62-a494f085c7f2',
+    name: 'test',
+    sandboxUrl:
+        'https://npmrrkwizgrjiodijvje.supabase.co/storage/v1/object/public/sandboxes/test/index.html?',
+    runnableUrl:
+        'https://gamegram-backend-2fqi.onrender.com/sandboxes/b3fab486-79fc-46ac-9abc-12c142a82c28/files/index.html?mode=edit&sandbox_id=b3fab486-79fc-46ac-9abc-12c142a82c28',
+    thumbnail: 'assets/placeholder_space.png',
+    creatorName: 'Gamegram Creator',
+  ),
+];
+
 final demoGames = <Game>[
   Game(
     id: 'polytrack',

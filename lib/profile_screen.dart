@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-import 'game_player_screen.dart';
 import 'mock_data.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
+
+  Future<void> _openGame(String url, BuildContext context) async {
+    final uri = Uri.parse(url);
+    final launched = await launchUrl(uri, mode: LaunchMode.externalApplication);
+    if (!launched && context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Could not open game link')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -122,16 +132,7 @@ class ProfileScreen extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final game = demoGames[index];
                   return InkWell(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => GamePlayerScreen(
-                            playUrl: game.playUrl,
-                            title: game.title,
-                          ),
-                        ),
-                      );
-                    },
+                    onTap: () => _openGame(game.playUrl, context),
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
