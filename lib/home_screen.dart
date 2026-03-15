@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'game_player_screen.dart';
 import 'mock_data.dart';
 
 class FeedScreen extends StatelessWidget {
@@ -21,7 +22,14 @@ class FeedScreen extends StatelessWidget {
             ),
             child: InkWell(
               onTap: () {
-                // later: open game details
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => GamePlayerScreen(
+                      playUrl: game.playUrl,
+                      title: game.title,
+                    ),
+                  ),
+                );
               },
               child: Padding(
                 padding: const EdgeInsets.all(16),
@@ -114,4 +122,3 @@ class _StatIcon extends StatelessWidget {
     );
   }
 }
-

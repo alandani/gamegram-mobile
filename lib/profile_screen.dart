@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'game_player_screen.dart';
 import 'mock_data.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -117,36 +118,48 @@ class ProfileScreen extends StatelessWidget {
                 itemCount: 6,
                 itemBuilder: (context, index) {
                   final game = demoGames[index];
-                  return Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: Colors.white.withOpacity(0.05),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              image: DecorationImage(
-                                image: AssetImage(game.thumbnailAsset),
-                                fit: BoxFit.cover,
+                  return InkWell(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => GamePlayerScreen(
+                            playUrl: game.playUrl,
+                            title: game.title,
+                          ),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        color: Colors.white.withOpacity(0.05),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                image: DecorationImage(
+                                  image: AssetImage(game.thumbnailAsset),
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        const SizedBox(height: 4),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 4),
-                          child: Text(
-                            game.title,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
+                          const SizedBox(height: 4),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 4),
+                            child: Text(
+                              game.title,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 4),
-                      ],
+                          const SizedBox(height: 4),
+                        ],
+                      ),
                     ),
                   );
                 },
@@ -158,4 +171,3 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 }
-

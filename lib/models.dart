@@ -6,6 +6,7 @@ class Game {
     required this.likes,
     required this.comments,
     required this.thumbnailAsset,
+     required this.playUrl,
     this.isLiked = false,
   });
 
@@ -15,6 +16,7 @@ class Game {
   final int likes;
   final int comments;
   final String thumbnailAsset;
+   final String playUrl;
   final bool isLiked;
 }
 
@@ -33,4 +35,3 @@ class UserProfile {
   final int followers;
   final int following;
 }
-
